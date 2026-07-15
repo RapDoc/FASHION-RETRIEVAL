@@ -47,7 +47,7 @@ Every image is retrieved by a known grid cell, which is stored as its weak label
 so evaluation labels are generated rather than hand-annotated.
 
 The exact image set used for the results in the write-up is available as a Kaggle
-dataset: **`<add your public Kaggle dataset link here>`**. Download it into
+dataset: **`<https://www.kaggle.com/datasets/sahaj1472/fashion-data>`**. Download it into
 `data/` to reproduce the reported metrics exactly.
 
 Scripts fail with a clear message (not a stack trace) if the dataset or index is
@@ -58,7 +58,7 @@ missing, pointing back to the relevant step.
 ```bash
 pip install -r requirements.txt
 
-# 1. Build the dataset (see data_collection/) or drop images into data/images/
+# 1. Build the dataset (see data_collection/) or drop images into data/images/ (from the provided dataset link)
 python data_collection/collect.py --provider pexels --per-cell 8
 
 # 2. Generate evaluation labels
