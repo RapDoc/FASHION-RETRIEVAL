@@ -1,0 +1,549 @@
+{
+  "_doc": "Each query carries a PREDICATE over image facts. eval/labels.py evaluates it against the weak labels from data_collection/collect.py + Fashionpedia GT to GENERATE relevance judgements. No hand annotation. `swap_of` marks a query as the colour-swapped twin of another -> used to build binding-accuracy pairs.",
+  "queries": [
+    {
+      "id": "Q1",
+      "official": true,
+      "type": "attribute",
+      "text": "A person in a bright yellow raincoat.",
+      "predicate": {
+        "garments": [
+          {
+            "type": "raincoat",
+            "color": "yellow"
+          }
+        ]
+      }
+    },
+    {
+      "id": "Q2",
+      "official": true,
+      "type": "contextual",
+      "text": "Professional business attire inside a modern office.",
+      "predicate": {
+        "garments": [
+          {
+            "type": [
+              "blazer",
+              "suit",
+              "shirt"
+            ]
+          }
+        ],
+        "scene_any": [
+          "office"
+        ],
+        "formality_any": [
+          "formal",
+          "business_casual"
+        ]
+      }
+    },
+    {
+      "id": "Q3",
+      "official": true,
+      "type": "complex_semantic",
+      "text": "Someone wearing a blue shirt sitting on a park bench.",
+      "predicate": {
+        "garments": [
+          {
+            "type": "shirt",
+            "color": "blue"
+          }
+        ],
+        "scene_any": [
+          "park"
+        ]
+      }
+    },
+    {
+      "id": "Q4",
+      "official": true,
+      "type": "style_inference",
+      "text": "Casual weekend outfit for a city walk.",
+      "predicate": {
+        "garments": [
+          {
+            "type": [
+              "hoodie",
+              "t-shirt",
+              "jeans",
+              "sweater",
+              "jacket"
+            ]
+          }
+        ],
+        "scene_any": [
+          "street"
+        ],
+        "formality_any": [
+          "casual"
+        ]
+      }
+    },
+    {
+      "id": "Q5",
+      "official": true,
+      "type": "compositional",
+      "text": "A red tie and a white shirt in a formal setting.",
+      "predicate": {
+        "garments": [
+          {
+            "type": "tie",
+            "color": "red"
+          },
+          {
+            "type": "shirt",
+            "color": "white"
+          }
+        ],
+        "scene_any": [
+          "office",
+          "formal_event"
+        ],
+        "formality_any": [
+          "formal"
+        ]
+      },
+      "difficulty": "colour_critical"
+    },
+    {
+      "id": "Q5_swap",
+      "type": "compositional",
+      "swap_of": "Q5",
+      "text": "A white tie and a red shirt in a formal setting.",
+      "predicate": {
+        "garments": [
+          {
+            "type": "tie",
+            "color": "white"
+          },
+          {
+            "type": "shirt",
+            "color": "red"
+          }
+        ],
+        "scene_any": [
+          "office",
+          "formal_event"
+        ]
+      }
+    },
+    {
+      "id": "C01",
+      "type": "compositional",
+      "text": "A navy blazer over a white shirt.",
+      "predicate": {
+        "garments": [
+          {
+            "type": "blazer",
+            "color": "navy"
+          },
+          {
+            "type": "shirt",
+            "color": "white"
+          }
+        ]
+      },
+      "difficulty": "colour_critical"
+    },
+    {
+      "id": "C01_swap",
+      "type": "compositional",
+      "swap_of": "C01",
+      "text": "A white blazer over a navy shirt.",
+      "predicate": {
+        "garments": [
+          {
+            "type": "blazer",
+            "color": "white"
+          },
+          {
+            "type": "shirt",
+            "color": "navy"
+          }
+        ]
+      }
+    },
+    {
+      "id": "C02",
+      "type": "compositional",
+      "text": "A red hoodie with black jeans.",
+      "predicate": {
+        "garments": [
+          {
+            "type": "hoodie",
+            "color": "red"
+          },
+          {
+            "type": "jeans",
+            "color": "black"
+          }
+        ]
+      },
+      "difficulty": "type_separable"
+    },
+    {
+      "id": "C02_swap",
+      "type": "compositional",
+      "swap_of": "C02",
+      "text": "A black hoodie with red jeans.",
+      "predicate": {
+        "garments": [
+          {
+            "type": "hoodie",
+            "color": "black"
+          },
+          {
+            "type": "jeans",
+            "color": "red"
+          }
+        ]
+      }
+    },
+    {
+      "id": "C03",
+      "type": "compositional",
+      "text": "A blue shirt with beige pants.",
+      "predicate": {
+        "garments": [
+          {
+            "type": "shirt",
+            "color": "blue"
+          },
+          {
+            "type": "pants",
+            "color": "beige"
+          }
+        ]
+      },
+      "difficulty": "type_separable"
+    },
+    {
+      "id": "C03_swap",
+      "type": "compositional",
+      "swap_of": "C03",
+      "text": "A beige shirt with blue pants.",
+      "predicate": {
+        "garments": [
+          {
+            "type": "shirt",
+            "color": "beige"
+          },
+          {
+            "type": "pants",
+            "color": "blue"
+          }
+        ]
+      }
+    },
+    {
+      "id": "C04",
+      "type": "compositional",
+      "text": "A green jacket and a white t-shirt.",
+      "predicate": {
+        "garments": [
+          {
+            "type": "jacket",
+            "color": "green"
+          },
+          {
+            "type": "t-shirt",
+            "color": "white"
+          }
+        ]
+      },
+      "difficulty": "colour_critical"
+    },
+    {
+      "id": "C04_swap",
+      "type": "compositional",
+      "swap_of": "C04",
+      "text": "A white jacket and a green t-shirt.",
+      "predicate": {
+        "garments": [
+          {
+            "type": "jacket",
+            "color": "white"
+          },
+          {
+            "type": "t-shirt",
+            "color": "green"
+          }
+        ]
+      }
+    },
+    {
+      "id": "C05",
+      "type": "compositional",
+      "text": "A black coat over a yellow sweater.",
+      "predicate": {
+        "garments": [
+          {
+            "type": "coat",
+            "color": "black"
+          },
+          {
+            "type": "sweater",
+            "color": "yellow"
+          }
+        ]
+      },
+      "difficulty": "colour_critical"
+    },
+    {
+      "id": "C05_swap",
+      "type": "compositional",
+      "swap_of": "C05",
+      "text": "A yellow coat over a black sweater.",
+      "predicate": {
+        "garments": [
+          {
+            "type": "coat",
+            "color": "yellow"
+          },
+          {
+            "type": "sweater",
+            "color": "black"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A01",
+      "type": "attribute",
+      "text": "A woman in a red dress.",
+      "predicate": {
+        "garments": [
+          {
+            "type": "dress",
+            "color": "red"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A02",
+      "type": "attribute",
+      "text": "A person in a mustard yellow sweater.",
+      "predicate": {
+        "garments": [
+          {
+            "type": "sweater",
+            "color": "yellow"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A03",
+      "type": "attribute",
+      "text": "Someone wearing a denim jacket.",
+      "predicate": {
+        "garments": [
+          {
+            "type": "jacket",
+            "color": "blue"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A04",
+      "type": "attribute",
+      "text": "A person in an all black outfit.",
+      "predicate": {
+        "garments": [
+          {
+            "type": [
+              "coat",
+              "jacket",
+              "shirt"
+            ],
+            "color": "black"
+          },
+          {
+            "type": [
+              "pants",
+              "jeans"
+            ],
+            "color": "black"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A05",
+      "type": "attribute",
+      "text": "A pink scarf.",
+      "predicate": {
+        "garments": [
+          {
+            "type": "scarf",
+            "color": "pink"
+          }
+        ]
+      }
+    },
+    {
+      "id": "A06",
+      "type": "attribute",
+      "text": "A grey suit.",
+      "predicate": {
+        "garments": [
+          {
+            "type": "suit",
+            "color": "gray"
+          }
+        ]
+      }
+    },
+    {
+      "id": "S01",
+      "type": "contextual",
+      "text": "A person relaxing at home in comfortable clothes.",
+      "predicate": {
+        "scene_any": [
+          "home"
+        ],
+        "formality_any": [
+          "casual",
+          "athleisure"
+        ]
+      }
+    },
+    {
+      "id": "S02",
+      "type": "contextual",
+      "text": "Someone reading on a bench in a green park.",
+      "predicate": {
+        "scene_any": [
+          "park"
+        ]
+      }
+    },
+    {
+      "id": "S03",
+      "type": "contextual",
+      "text": "A businesswoman presenting in a boardroom.",
+      "predicate": {
+        "garments": [
+          {
+            "type": [
+              "blazer",
+              "suit",
+              "dress"
+            ]
+          }
+        ],
+        "scene_any": [
+          "office"
+        ],
+        "formality_any": [
+          "formal"
+        ]
+      }
+    },
+    {
+      "id": "S04",
+      "type": "contextual",
+      "text": "Streetwear on a busy city sidewalk.",
+      "predicate": {
+        "scene_any": [
+          "street"
+        ],
+        "formality_any": [
+          "casual"
+        ]
+      }
+    },
+    {
+      "id": "S05",
+      "type": "contextual",
+      "text": "Formal attire at an evening event.",
+      "predicate": {
+        "scene_any": [
+          "formal_event"
+        ],
+        "formality_any": [
+          "formal"
+        ]
+      }
+    },
+    {
+      "id": "V01",
+      "type": "style_inference",
+      "text": "An outfit you'd wear to a job interview.",
+      "predicate": {
+        "garments": [
+          {
+            "type": [
+              "blazer",
+              "suit",
+              "shirt"
+            ]
+          }
+        ],
+        "formality_any": [
+          "formal",
+          "business_casual"
+        ]
+      }
+    },
+    {
+      "id": "V02",
+      "type": "style_inference",
+      "text": "Cozy winter layers for cold weather.",
+      "predicate": {
+        "garments": [
+          {
+            "type": [
+              "coat",
+              "sweater",
+              "scarf"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "V03",
+      "type": "style_inference",
+      "text": "Something to wear to the gym.",
+      "predicate": {
+        "formality_any": [
+          "athleisure"
+        ]
+      }
+    },
+    {
+      "id": "V04",
+      "type": "style_inference",
+      "text": "Smart casual outfit for a coffee meeting.",
+      "predicate": {
+        "formality_any": [
+          "business_casual"
+        ],
+        "scene_any": [
+          "cafe",
+          "office"
+        ]
+      }
+    },
+    {
+      "id": "V05",
+      "type": "style_inference",
+      "text": "Rainy day outfit.",
+      "predicate": {
+        "garments": [
+          {
+            "type": [
+              "raincoat",
+              "coat"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

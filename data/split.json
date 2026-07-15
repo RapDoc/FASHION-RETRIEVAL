@@ -1,0 +1,12 @@
+{
+ "index_eval": [
+  "b1",
+  "c1",
+  "d1"
+ ],
+ "train": [
+  "a1",
+  "e1"
+ ],
+ "note": "LoRA fine-tuning may ONLY use `train`. Reporting a number computed on images the encoder was tuned on is data leakage."
+}

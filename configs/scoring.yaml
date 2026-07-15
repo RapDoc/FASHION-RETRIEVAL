@@ -1,0 +1,21 @@
+# Retrieval scoring weights — tuned on the eval set (Day 5), not hardcoded.
+# Separating these from code is the "logic separated from data" requirement.
+
+# Stage 1: recall depth (candidates passed to the expensive reranker).
+# This is corpus-size-independent — the scalability argument hinges on it.
+recall_r: 200
+
+# Stage 2: fusion weights for garment queries.
+w_bind: 0.55      # Hungarian binding score — the compositional signal
+w_global: 0.30    # global CLIP/SigLIP cosine — overall scene+garment gestalt
+w_scene: 0.15     # scene-probe similarity — context term
+
+# Binding internals (retriever/binding.py mirrors these defaults).
+alpha: 0.55       # region-embedding vs "a {color} {type}" text
+beta: 0.30        # raw-LAB colour proximity (tiebreak, no vocab snapping)
+gamma: 0.15       # coarse garment-type prior
+unmatched_penalty: 0.5
+
+# Stage 3: cross-encoder (BLIP-ITM) verification on the top candidates.
+w_crossencoder: 0.5     # blend of ITM prob vs stage-2 score
+topk_crossencoder: 20   # only the top-K get the expensive joint-attention pass

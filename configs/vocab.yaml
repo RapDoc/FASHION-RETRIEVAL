@@ -1,0 +1,90 @@
+# ============================================================
+# CONTROLLED VOCABULARY — single source of truth.
+# Used by: data_collection/collect.py, eval/labels.py,
+#          retriever/parse_query.py, indexer/color.py
+# Nothing downstream may invent a term that is not in here.
+# ============================================================
+
+# ---------- AXIS 1: ENVIRONMENT ----------
+# Maps to the scene head (Day 3) and to scene predicates in eval.
+environments:
+  office:      { indoor: true,  aliases: [workplace, boardroom, co-working, desk, corporate interior] }
+  street:      { indoor: false, aliases: [urban, city street, sidewalk, downtown, crosswalk] }
+  park:        { indoor: false, aliases: [garden, green space, park bench, lawn, botanical] }
+  home:        { indoor: true,  aliases: [living room, apartment, kitchen, indoors casual, couch] }
+  cafe:        { indoor: true,  aliases: [coffee shop, restaurant, bar] }          # buffer class
+  formal_event: { indoor: true, aliases: [wedding, gala, conference, ceremony] }   # needed for Q5
+
+# ---------- AXIS 2: GARMENT ----------
+# `parser_class` = the SegFormer-clothes class this maps to (Day 3).
+# `detector_only: true` => SegFormer has no class for it; needs the narrow
+#   Grounding-DINO accessory pass. These are the fragile ones.
+garments:
+  blazer:       { parser_class: Upper-clothes, formality_prior: formal,          aliases: [suit jacket, sport coat] }
+  suit:         { parser_class: Upper-clothes, formality_prior: formal,          aliases: [three-piece suit, business suit] }
+  shirt:        { parser_class: Upper-clothes, formality_prior: business_casual, aliases: [button-down, button-up, dress shirt, oxford] }
+  t-shirt:      { parser_class: Upper-clothes, formality_prior: casual,          aliases: [tee, tshirt] }
+  hoodie:       { parser_class: Upper-clothes, formality_prior: casual,          aliases: [sweatshirt, pullover] }
+  sweater:      { parser_class: Upper-clothes, formality_prior: casual,          aliases: [jumper, knitwear, cardigan] }
+  coat:         { parser_class: Coat,          formality_prior: business_casual, aliases: [overcoat, trench coat, parka] }
+  raincoat:     { parser_class: Coat,          formality_prior: casual,          aliases: [rain jacket, anorak, windbreaker] }  # Q1
+  jacket:       { parser_class: Coat,          formality_prior: casual,          aliases: [bomber, denim jacket, leather jacket] }
+  dress:        { parser_class: Dress,         formality_prior: formal,          aliases: [gown, frock] }
+  pants:        { parser_class: Pants,         formality_prior: business_casual, aliases: [trousers, chinos, slacks] }
+  jeans:        { parser_class: Pants,         formality_prior: casual,          aliases: [denim] }
+  skirt:        { parser_class: Skirt,         formality_prior: business_casual, aliases: [] }
+  shorts:       { parser_class: Pants,         formality_prior: casual,          aliases: [] }
+  tie:          { parser_class: null,          formality_prior: formal,          aliases: [necktie], detector_only: true }   # Q5
+  scarf:        { parser_class: Scarf,         formality_prior: casual,          aliases: [] }
+  hat:          { parser_class: Hat,           formality_prior: casual,          aliases: [cap, beanie] }
+
+# ---------- AXIS 3: COLOR ----------
+# CIELAB centroids (D65). `lab` is used by indexer/color.py for the deltaE
+# match and by eval/labels.py to snap web-tags to a canonical family.
+colors:
+  red:    { lab: [53.2,  80.1,  67.2], aliases: [crimson, scarlet, maroon, burgundy] }
+  orange: { lab: [66.9,  43.4,  74.9], aliases: [rust, amber, tangerine] }
+  yellow: { lab: [97.1, -21.6,  94.5], aliases: [mustard, gold, lemon] }     # Q1: "bright yellow"
+  green:  { lab: [46.2, -51.7,  49.9], aliases: [olive, emerald, sage, khaki] }
+  blue:   { lab: [32.3,  79.2, -107.9], aliases: [cobalt, azure, sky blue] } # Q3
+  navy:   { lab: [12.9,  47.5, -64.7], aliases: [dark blue, midnight] }
+  purple: { lab: [29.8,  58.9, -36.5], aliases: [violet, lavender, plum] }
+  pink:   { lab: [83.6,  24.1,   3.3], aliases: [rose, blush, fuchsia] }
+  brown:  { lab: [37.1,  25.0,  35.0], aliases: [chocolate, espresso] }
+  tan:    { lab: [74.0,   8.0,  45.0], aliases: [camel, khaki, beige-brown, sand] }   # was snapping to brown
+  mustard: { lab: [72.0,  12.0,  70.0], aliases: [gold, ochre, amber] }                 # warm yellow garments
+  olive:  { lab: [50.0,  -8.0,  45.0], aliases: [army green, military] }               # muted green-brown
+  beige:  { lab: [86.0,   2.0,  14.0], aliases: [cream, ivory, off-white, nude] }
+  white:  { lab: [100.0,  0.0,   0.0], aliases: [pure white] }               # Q5
+  gray:   { lab: [53.6,   0.0,   0.0], aliases: [grey, charcoal, slate] }
+  black:  { lab: [0.0,    0.0,   0.0], aliases: [jet black] }
+  light_blue: { lab: [70.0,  -5.0, -25.0], aliases: [sky blue, powder blue, denim] }  # common; was snapping to gray
+
+# ---------- COLOUR FAMILIES ----------
+# Extraction uses the fine palette above (mustard vs yellow) for accuracy.
+# Query MATCHING collapses fine colours into families, so a "yellow" query
+# matches a mustard garment. This decouples perceptual granularity from the
+# coarser colour words people actually type. Fixes Q1 (bright-yellow raincoats
+# that snap to mustard still match "yellow").
+color_families:
+  mustard: yellow
+  tan: brown
+  olive: green
+  navy: blue
+  light_blue: blue
+
+# ---------- AXIS 4: FORMALITY / VIBE ----------
+# NOTE: this axis was MISSING from the original grid. Queries 2 and 4 are
+# formality/vibe queries — without collecting on this axis they are unlabelable.
+formality:
+  formal:          { aliases: [business attire, professional, black tie, corporate] }   # Q2, Q5
+  business_casual: { aliases: [smart casual, office casual] }
+  casual:          { aliases: [weekend, relaxed, everyday, streetwear] }                # Q4
+  athleisure:      { aliases: [sportswear, gym, activewear] }
+
+# ---------- SPLIT ----------
+# Enforced on Day 1 to prevent the NegCLIP leakage failure mode.
+split:
+  index_eval_frac: 0.70   # indexed + evaluated. NEVER trained on.
+  train_frac: 0.30        # LoRA hard-negative fine-tune ONLY (optional Day 5).
+  seed: 42

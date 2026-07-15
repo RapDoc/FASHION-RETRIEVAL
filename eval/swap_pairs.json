@@ -1,0 +1,14 @@
+[
+ {
+  "query_id": "Q5",
+  "query_text": "A red tie and a white shirt in a formal setting.",
+  "difficulty": "colour_critical",
+  "swap_query_text": "A white tie and a red shirt in a formal setting.",
+  "positive_ids": [
+   "a1"
+  ],
+  "swapped_negative_ids": [
+   "b1"
+  ]
+ }
+]

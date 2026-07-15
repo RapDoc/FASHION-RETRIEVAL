@@ -1,0 +1,10 @@
+torch
+transformers
+open_clip_torch
+qdrant-client
+pillow
+numpy
+pyyaml
+requests
+scipy
+scikit-image
