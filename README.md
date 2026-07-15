@@ -58,7 +58,7 @@ missing, pointing back to the relevant step.
 ```bash
 pip install -r requirements.txt
 
-# 1. Build the dataset (see data_collection/) or drop images into data/images/ (from the provided dataset link)
+# 1. Build the dataset (see data_collection/) or drop images folder, manifest.jsonl and split.jsonl into data/ from the provided dataset link
 python data_collection/collect.py --provider pexels --per-cell 8
 
 # 2. Generate evaluation labels
